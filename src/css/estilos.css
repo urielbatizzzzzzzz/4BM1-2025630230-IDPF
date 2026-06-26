@@ -1,0 +1,381 @@
+/* ==========================================
+   PALETA DE COLORES - SERENAMENTE  */
+/* Fondo de pantalla general para el Login con la imagen de tu consultorio */
+.login-background-container {
+    background-image: url('../img/1.jpeg'); /* Ruta hacia tu imagen */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/* Forzar que la franja del login use el verde terapéutico del proyecto */
+.bg-primary.text-center {
+    background-color: #557A61 !important; /* Verde SerenaMente */
+}
+/* Cambiar el texto del título dentro de la franja a blanco para que resalte */
+.bg-primary.text-center h1 {
+    color: #ffffff !important; 
+}
+/* Caja estética del Formulario de Login */
+.center-container {
+    background-color: rgba(255, 255, 255, 0.95); /* Blanco con leve opacidad */
+    padding: 40px !important;
+    border-radius: 20px;
+    box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.12); /* Sombra suave moderna */
+    max-width: 450px;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+/* Encabezados y títulos principales fuera de la barra azul */
+h2, h3 {
+    color: #3b5745 !important; /* Verde pino oscuro muy elegante */
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+/* --- TEXTO DE LOS ENLACES (LINKS RECT-ROUTER) --- */
+.CustomLink {
+    color: #ffffff !important; /* CAMBIA EL TEXTO A BLANCO EN LOS BOTONES */
+    text-decoration: none !important;
+    font-weight: 500;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+.CustomLink:hover {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+/* --- DISEÑO PERSONALIZADO DE BOTONES BOOTSTRAP --- */
+/* Botón Principal (Verde Terapéutico) */
+.btn-primary, .btn-success {
+    background-color: #557A61 !important; /* Verde SerenaMente */
+    border-color: #557A61 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+.btn-primary:hover, .btn-success:hover {
+    background-color: #415e4a !important; /* Verde más oscurito al pasar el mouse */
+    border-color: #415e4a !important;
+    transform: translateY(-1px); /* Efecto flotante */
+}
+/* Botón Editar (Amarillo Ocre Cálido) */
+.btn-warning {
+    background-color: #E29548 !important; /* Color mostaza/ocre suave */
+    border-color: #E29548 !important;
+    color: #ffffff !important; /* Texto Blanco obligatorio */
+    border-radius: 8px !important;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+.btn-warning:hover {
+    background-color: #c97f35 !important;
+    border-color: #c97f35 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+}
+/* Botón Eliminar (Rojo Coral Suave) */
+.btn-danger {
+    background-color: #D96B62 !important; /* Rojo pastel/coral menos agresivo */
+    border-color: #D96B62 !important;
+    color: #ffffff !important; /* Texto Blanco */
+    border-radius: 8px !important;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+.btn-danger:hover {
+    background-color: #bf564d !important;
+    border-color: #bf564d !important;
+    transform: translateY(-1px);
+}
+/* Botón Información / Azul Claro */
+.btn-info {
+    background-color: #62929E !important; /* Azul grisáceo elegante */
+    border-color: #62929E !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+}
+.btn-info:hover {
+    background-color: #4f7782 !important;
+    border-color: #4f7782 !important;
+    color: #ffffff !important;
+}
+/* --- TABLAS Y CONTENEDORES --- */
+.table {
+    border-radius: 12px !important;
+    overflow: hidden;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.03);
+    border-collapse: separate;
+}
+.table thead th {
+    background-color: #f4f7f5 !important;
+    color: #4a6b54 !important;
+    font-weight: 600;
+    border-bottom: 2px solid #e2ebd5 !important;
+}
+/* Tarjetas informativas de imágenes (Info y Formularios) */
+.ImageContainer {
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border: 2px solid #e2ebd5;
+    transition: transform 0.2s;
+    object-fit: cover;
+}
+.ImageContainer:hover {
+    transform: scale(1.05);
+}
+.MarginContainer {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.AlignCenter {
+    text-align: center;
+}
+/* ==========================================
+   USUARIO NO VÁLIDO - SERENAMENTE
+========================================== */
+
+.no-valido-container {
+    background: linear-gradient(135deg, #e8f3ef, #f5f7f6);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-valido-card {
+    width: 650px;
+    padding: 50px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.12);
+    text-align: center;
+    border: 1px solid #dce7e0;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.no-valido-title {
+    color: #557A61;
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.no-valido-subtitle {
+    color: #D96B62;
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.no-valido-text {
+    color: #4a4a4a;
+    margin-top: 15px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.no-valido-btn {
+    margin-top: 25px;
+    background-color: #557A61 !important;
+    border: none !important;
+    padding: 10px 25px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.no-valido-btn:hover {
+    background-color: #415e4a !important;
+    transform: translateY(-2px);
+}
+
+/* Animación suave */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+body {
+  background: linear-gradient(135deg, #eaf4ef, #f7faf8);
+  min-height: 100vh;
+}
+
+/* Fondo suave tipo consultorio moderno */
+.serena-bg {
+  background: radial-gradient(circle at top, #ffffff 0%, #e6f0ea 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+.serena-card {
+  /* Más opaca para que el texto y el editor no se "pierdan" con el fondo */
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  border: 1px solid rgba(85, 122, 97, 0.25);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+  color: #2f3d34; /* texto base oscuro para buen contraste */
+}
+/* Texto e info del ejercicio siempre legible sobre la tarjeta clara */
+.serena-card p,
+.serena-card h4,
+.serena-card h5 {
+  color: #2f3d34;
+}
+.serena-card b {
+  color: #3b5745;
+}
+/* Selector de ejercicio con borde verde para que destaque del fondo */
+.serena-card .form-select {
+  border: 1px solid #557A61;
+  color: #2f3d34;
+  font-weight: 500;
+}
+.serena-card .form-select:focus {
+  border-color: #3b5745;
+  box-shadow: 0 0 0 0.2rem rgba(85, 122, 97, 0.25);
+}
+
+/* ==========================================
+   PANEL DE RESPUESTA DE LA IA
+========================================== */
+.ia-panel {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(85, 122, 97, 0.30);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  background: #ffffff;
+}
+.ia-panel-header {
+  background: linear-gradient(135deg, #557A61, #3b5745);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 10px 18px;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ia-copiar {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+.ia-copiar:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+/* Badge de resultado de la ejecución (color según el estado) */
+.resultado-badge {
+  display: inline-block;
+  padding: 2px 14px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+.resultado-ok    { background: #557A61; }  /* VERDADERO - verde */
+.resultado-fail  { background: #D96B62; }  /* FALSO - rojo coral */
+.resultado-error { background: #E29548; }  /* ERROR - naranja */
+.ia-panel-body {
+  padding: 16px 18px;
+  background: #f4f7f5;
+}
+.ia-cargando {
+  color: #557A61;
+  font-style: italic;
+  font-weight: 500;
+}
+.ia-respuesta {
+  white-space: pre-wrap;       /* respeta saltos de línea y ajusta texto */
+  word-break: break-word;
+  margin: 0;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #2f3d34;
+}
+
+/* ==========================================
+   TABLA DE MEJORAS (index)
+========================================== */
+.tabla-mejoras-wrap {
+  max-width: 900px;
+  margin: 40px auto;
+  font-family: sans-serif;
+}
+.tabla-mejoras-wrap h3 {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.tabla-mejoras {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  background: #ffffff;
+}
+.tabla-mejoras thead th {
+  background: linear-gradient(135deg, #557A61, #3b5745);
+  color: #ffffff;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+.tabla-mejoras tbody td {
+  padding: 11px 16px;
+  border-bottom: 1px solid #e2ebd5;
+  color: #2f3d34;
+}
+.tabla-mejoras tbody tr:nth-child(even) {
+  background: #f4f7f5;
+}
+.tabla-mejoras tbody tr:hover {
+  background: #e6f0ea;
+}
+.tabla-mejoras .badge-ok {
+  display: inline-block;
+  background: #557A61;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.serena-header {
+  background: linear-gradient(135deg, #557A61, #3b5745);
+  color: white;
+  padding: 18px 25px;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.serena-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.serena-subtitle {
+  font-size: 13px;
+  opacity: 0.9;
+}
