@@ -9,28 +9,30 @@ const Pregunta = ({ idEjercicio, pregunta }) => {
     return (
         <tr>
             {/* CORREGIDO: Usamos textoPregunta para asegurar que nunca se vea vacío */}
-            <td>{textoPregunta}</td>
-            <td className="AlignCenter">
-                <Button variant="success" className="M-6">
-                    <Link to={`/info?id=${idEjercicio}`} className="CustomLink" >
-                        Ver pregunta
-                    </Link>
-                </Button>
-                <Button variant="warning" className="M-6">
-                    <Link to={`/editar?id=${idEjercicio}`} className="CustomLink" >
-                        Editar pregunta
-                    </Link>
-                </Button>
-                <Button variant="danger" className="M-6">
-                    <Link to={`/eliminar?id=${idEjercicio}`} className="CustomLink" >
-                        Eliminar pregunta
-                    </Link>                    
-                </Button>
-                <Button variant="primary" className="M-6">
-                    <Link to={`/probar?id=${idEjercicio}`} className="CustomLink" >
-                        Probar
-                    </Link>
-                </Button>
+            <td className="align-middle">{textoPregunta}</td>
+            <td>
+                <div className="crud-acciones">
+                    <Button variant="outline-success" size="sm" className="crud-btn">
+                        <Link to={`/info?id=${idEjercicio}`} className="CrudLink" >
+                            👁 Ver
+                        </Link>
+                    </Button>
+                    <Button variant="outline-warning" size="sm" className="crud-btn">
+                        <Link to={`/editar?id=${idEjercicio}`} className="CrudLink" >
+                            ✏ Editar
+                        </Link>
+                    </Button>
+                    <Button variant="outline-danger" size="sm" className="crud-btn">
+                        <Link to={`/eliminar?id=${idEjercicio}`} className="CrudLink" >
+                            🗑 Eliminar
+                        </Link>
+                    </Button>
+                    <Button variant="outline-primary" size="sm" className="crud-btn">
+                        <Link to={`/probar?id=${idEjercicio}`} className="CrudLink" >
+                            ▶ Probar
+                        </Link>
+                    </Button>
+                </div>
             </td>
         </tr>
     );

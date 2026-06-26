@@ -37,10 +37,14 @@ class Administrator extends React.Component
                         </Alert>
                         : null
                 }                
-                <Button variant="primary" style={{ margin: "12px" }}>
-
-                    <Link to="/formulario" className="CustomLink">NUEVA PREGUNTA</Link>
-                </Button>
+                <div className="crud-toolbar">
+                    <Button variant="primary">
+                        <Link to="/formulario" className="CustomLink">+ NUEVA PREGUNTA</Link>
+                    </Button>
+                    <Button variant="info">
+                        <Link to="/probar" className="CustomLink">💡 Pedir ayuda IA</Link>
+                    </Button>
+                </div>
                 <Table striped bordered >
                     <thead>
                         <tr>

@@ -119,28 +119,88 @@ class ProbarEjercicio extends React.Component {
   // ============================================================
   // CICLO DE VIDA: componentDidMount
   // ============================================================
-  // Se ejecuta al montar el componente
-  // Inicializa el temporizador y carga el primer ejercicio
+  // Se ejecuta al montar el componente.
+  // Inicializa el temporizador y carga los ejercicios DESDE LA BD
+  // (tabla tablajson) usando el idEjercicio que llega en la URL.
+  // El array hardcodeado del state queda solo como respaldo offline.
   // ============================================================
   componentDidMount() {
     this.inicio = Date.now();  // Registrar tiempo de inicio
-    
-    // Extraer el ID de la URL
-    const params = new URLSearchParams(window.location.search);
-    const idParam = params.get("id");
-    let index = 0;
-    
-    if (idParam !== null && !isNaN(idParam)) {
-        index = parseInt(idParam, 10);
-        // Validar que el índice exista en el array de ejercicios
-        if (index < 0 || index >= this.state.ejercicios.length) {
-            index = 0;
-        }
-    }
 
+    const idParam = new URLSearchParams(window.location.search).get("id");
+
+    // Se traen TODAS las preguntas y se conservan solo las que son
+    // ejercicios de código (las que tienen el campo "funcion").
+    axios.get("/Preguntas")
+      .then((res) => {
+        const ejercicios = (res.data || [])
+          .map(this.mapearEjercicio)
+          .filter(Boolean);
+
+        if (ejercicios.length === 0) {
+          // No hay ejercicios de código en la BD: usar respaldo local.
+          this.seleccionarPorIndice(idParam);
+          return;
+        }
+
+        // Seleccionar el ejercicio cuyo idEjercicio coincide con la URL;
+        // si no coincide ninguno, se muestra el primero.
+        let index = ejercicios.findIndex(
+          (e) => String(e.idEjercicio) === String(idParam)
+        );
+        if (index < 0) index = 0;
+
+        const ejercicio = ejercicios[index];
+        this.setState({ ejercicios, ejercicio, codigo: ejercicio.codigo });
+      })
+      .catch(() => {
+        // Sin backend disponible: respaldo con el array local del state.
+        this.seleccionarPorIndice(idParam);
+      });
+  }
+
+  // ============================================================
+  // MÉTODO: mapearEjercicio
+  // ============================================================
+  // Convierte un registro { idEjercicio, columnajson } de la BD en el
+  // objeto que entiende este componente. Devuelve null si el registro
+  // no es un ejercicio de código (no tiene "funcion"), por ejemplo las
+  // preguntas de tipo arrastrar/soltar.
+  // ============================================================
+  mapearEjercicio = (item) => {
+    let datos = item.columnajson;
+    if (typeof datos === "string") {
+      try { datos = JSON.parse(datos); } catch (e) { return null; }
+    }
+    if (!datos || !datos.funcion) return null;
+
+    return {
+      idEjercicio: item.idEjercicio,
+      titulo: datos.titulo || datos.pregunta || `Ejercicio #${item.idEjercicio}`,
+      descripcion: datos.descripcion || datos.pregunta || "",
+      funcion: datos.funcion,
+      formula: datos.formula || "",
+      entrada: datos.entrada || [],
+      esperado: datos.esperado,
+      codigo: datos.codigo || `function ${datos.funcion}(){\n\n}`
+    };
+  };
+
+  // ============================================================
+  // MÉTODO: seleccionarPorIndice (respaldo offline)
+  // ============================================================
+  // Interpreta el parámetro de la URL como índice del array local de
+  // ejercicios. Se usa solo cuando la BD no está disponible.
+  // ============================================================
+  seleccionarPorIndice = (idParam) => {
+    let index = 0;
+    if (idParam !== null && !isNaN(idParam)) {
+      index = parseInt(idParam, 10);
+      if (index < 0 || index >= this.state.ejercicios.length) index = 0;
+    }
     const ejercicio = this.state.ejercicios[index];
     this.setState({ ejercicio, codigo: ejercicio.codigo });
-  }
+  };
 
   // ============================================================
   // MÉTODO: ejecutar
@@ -283,6 +343,26 @@ class ProbarEjercicio extends React.Component {
     return "error";
   };
 
+  // Traduce el resultado técnico (VERDADERO/FALSO/ERROR) a un mensaje
+  // claro para el usuario, explicando qué pasó y qué hacer.
+  mensajeResultado = () => {
+    const { resultado, salida, ejercicio } = this.state;
+    if (!resultado) return null;
+    if (resultado === "VERDADERO") {
+      return { tipo: "ok", texto: "✅ ¡Correcto! Tu función devolvió exactamente lo esperado." };
+    }
+    if (resultado === "FALSO") {
+      return {
+        tipo: "fail",
+        texto: `❌ Casi. Se esperaba ${JSON.stringify(ejercicio?.esperado)} y tu función devolvió ${salida}. Revisa tu lógica e inténtalo de nuevo.`
+      };
+    }
+    return {
+      tipo: "error",
+      texto: `⚠️ Tu código tiene un error y no se pudo ejecutar: ${salida}`
+    };
+  };
+
   // Copia la respuesta de la IA al portapapeles.
   copiarRespuesta = () => {
     if (this.state.ayudaIA) {
@@ -339,6 +419,7 @@ class ProbarEjercicio extends React.Component {
           ============================================================ */}
           <select
             className="form-select mb-3"
+            value={this.state.ejercicios.findIndex((e) => e === this.state.ejercicio)}
             onChange={this.cambiarEjercicio}
           >
             {this.state.ejercicios.map((e, i) => (
@@ -347,6 +428,19 @@ class ProbarEjercicio extends React.Component {
               </option>
             ))}
           </select>
+
+          {/* ============================================================
+            GUÍA DE USO - Explica el flujo en 4 pasos
+          ============================================================ */}
+          <div className="serena-guia mb-3">
+            <span className="serena-guia-titulo">🧭 ¿Cómo funciona esta práctica?</span>
+            <ol className="serena-pasos">
+              <li>Escribe tu solución <b>dentro de la función</b>, en el editor de abajo.</li>
+              <li>Pulsa <b>▶ Ejecutar</b>: tu función se llama con la <b>Entrada</b> y se compara con lo <b>Esperado</b>.</li>
+              <li>Revisa el <b>Resultado</b>: verde = correcto · rojo = no coincide · naranja = error.</li>
+              <li>¿Te atoras? Pide a la IA una <b>💡 pista</b> o un <b>🎓 análisis paso a paso</b>.</li>
+            </ol>
+          </div>
 
           {/* ============================================================
             INFORMACIÓN DEL EJERCICIO
@@ -359,6 +453,15 @@ class ProbarEjercicio extends React.Component {
             <p><b>Regla:</b> {this.state.ejercicio?.formula}</p>
             <p><b>Entrada:</b> {JSON.stringify(this.state.ejercicio?.entrada)}</p>
             <p><b>Esperado:</b> {JSON.stringify(this.state.ejercicio?.esperado)}</p>
+
+            {/* Llamada concreta que se evaluará: conecta función + entrada + esperado */}
+            <p className="serena-llamada mb-0">
+              Al ejecutar se evaluará:{" "}
+              <code>
+                {this.state.ejercicio?.funcion}({(this.state.ejercicio?.entrada || []).join(", ")})
+              </code>{" "}
+              y debe devolver <code>{JSON.stringify(this.state.ejercicio?.esperado)}</code>
+            </p>
           </div>
 
           {/* ============================================================
@@ -389,35 +492,65 @@ class ProbarEjercicio extends React.Component {
           <div className="mt-3">
             <h5>
               Resultado:{" "}
-              {this.state.resultado && (
+              {this.state.resultado ? (
                 <span className={`resultado-badge resultado-${this.estadoResultado()}`}>
                   {this.state.resultado}
                 </span>
+              ) : (
+                <span className="text-muted fw-normal" style={{ fontSize: "0.95rem" }}>
+                  pulsa ▶ Ejecutar para probar tu función
+                </span>
               )}
             </h5>
-            <h5>Salida: {this.state.salida}</h5>
-            <h5>Tiempo: {this.state.tiempo}s</h5>
+
+            {/* Mensaje claro de lo que pasó al ejecutar */}
+            {this.mensajeResultado() && (
+              <div className={`resultado-msg resultado-msg-${this.mensajeResultado().tipo}`}>
+                {this.mensajeResultado().texto}
+              </div>
+            )}
+
+            <h5>Salida <small className="text-muted">(lo que devolvió tu función)</small>: {this.state.salida || "—"}</h5>
+            <h5>Tiempo <small className="text-muted">(desde que abriste el ejercicio)</small>: {this.state.tiempo}s</h5>
           </div>
 
           {/* ============================================================
             BOTONES DE ACCIÓN
           ============================================================
-            Ejecutar: Ejecuta el código
-            Pedir ayuda IA: Sugerencias para resolver el ejercicio
-            IA Tutor: Análisis más profundo del código
+            Ejecutar prueba el código; los dos botones de IA (separados
+            a la derecha) ofrecen una pista o un análisis profundo.
           ============================================================ */}
-          <div className="d-flex gap-3 mt-3 flex-wrap">
-            <Button variant="success" onClick={this.ejecutar} disabled={this.state.cargandoIA}>
+          <div className="serena-acciones mt-3">
+            <Button
+              variant="success"
+              onClick={this.ejecutar}
+              disabled={this.state.cargandoIA}
+              title="Prueba tu código llamando a la función con la Entrada del ejercicio"
+            >
               ▶ Ejecutar
             </Button>
 
-            <Button variant="primary" onClick={this.pedirAyudaIA} disabled={this.state.cargandoIA}>
-              {this.state.cargandoIA && this.state.modoIA === "ayuda" ? "Pensando..." : "💡 Pedir ayuda IA"}
-            </Button>
+            <div className="serena-ia-grupo">
+              <span className="serena-ia-label">¿Necesitas ayuda?</span>
 
-            <Button variant="info" onClick={this.pedirTutorIA} disabled={this.state.cargandoIA}>
-              {this.state.cargandoIA && this.state.modoIA === "tutor" ? "Analizando..." : "🎓 IA Tutor"}
-            </Button>
+              <Button
+                variant="primary"
+                onClick={this.pedirAyudaIA}
+                disabled={this.state.cargandoIA}
+                title="La IA te da UNA pista breve, sin revelar la solución completa"
+              >
+                {this.state.cargandoIA && this.state.modoIA === "ayuda" ? "Pensando..." : "💡 Pedir ayuda IA"}
+              </Button>
+
+              <Button
+                variant="info"
+                onClick={this.pedirTutorIA}
+                disabled={this.state.cargandoIA}
+                title="La IA analiza tu código a profundidad, paso a paso"
+              >
+                {this.state.cargandoIA && this.state.modoIA === "tutor" ? "Analizando..." : "🎓 IA Tutor"}
+              </Button>
+            </div>
           </div>
 
           {/* ============================================================

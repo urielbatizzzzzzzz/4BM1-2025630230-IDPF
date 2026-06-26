@@ -6,7 +6,7 @@ import { BrowserRouter} from 'react-router-dom';
 import BootstrapReact from './componentes/BootstrapReact.jsx'
 import './css/estilos.css'; 
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:8081/';
+axios.defaults.baseURL = 'http://localhost:8080/';
 
 
 class Application extends React.Component {
